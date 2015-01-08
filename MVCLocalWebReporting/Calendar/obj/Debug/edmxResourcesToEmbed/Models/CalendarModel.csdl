@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="CalendarModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="CalendarModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Tasks" EntityType="CalendarModel.Tasks" />
+    <EntitySet Name="Works" EntityType="CalendarModel.Works" />
+    <AssociationSet Name="TasksWorks" Association="CalendarModel.TasksWorks">
+      <End Role="Tasks" EntitySet="Tasks" />
+      <End Role="Works" EntitySet="Works" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Tasks">
+    <Key>
+      <PropertyRef Name="TaskId" />
+    </Key>
+    <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TaskName" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" />
+    <Property Name="Hours" Type="Int32" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="Works" Relationship="CalendarModel.TasksWorks" FromRole="Tasks" ToRole="Works" />
+  </EntityType>
+  <EntityType Name="Works">
+    <Key>
+      <PropertyRef Name="WorkId" />
+    </Key>
+    <Property Name="WorkId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WorkName" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" />
+    <Property Name="BeginDate" Type="DateTime" Nullable="false" />
+    <Property Name="ReportedHours" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Task" Relationship="CalendarModel.TasksWorks" FromRole="Works" ToRole="Tasks" />
+    <Property Name="TasksTaskId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="TasksWorks">
+    <End Type="CalendarModel.Tasks" Role="Tasks" Multiplicity="1" />
+    <End Type="CalendarModel.Works" Role="Works" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tasks">
+        <PropertyRef Name="TaskId" />
+      </Principal>
+      <Dependent Role="Works">
+        <PropertyRef Name="TasksTaskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

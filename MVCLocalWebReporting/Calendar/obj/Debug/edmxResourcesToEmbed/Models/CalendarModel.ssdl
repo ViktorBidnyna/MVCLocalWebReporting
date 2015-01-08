@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CalendarModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="CalendarModelStoreContainer">
+    <EntitySet Name="Tasks" EntityType="CalendarModel.Store.Tasks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Works" EntityType="CalendarModel.Store.Works" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="TasksWorks" Association="CalendarModel.Store.TasksWorks">
+      <End Role="Tasks" EntitySet="Tasks" />
+      <End Role="Works" EntitySet="Works" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Tasks">
+    <Key>
+      <PropertyRef Name="TaskId" />
+    </Key>
+    <Property Name="TaskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaskName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Hours" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Works">
+    <Key>
+      <PropertyRef Name="WorkId" />
+    </Key>
+    <Property Name="WorkId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WorkName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="BeginDate" Type="datetime" Nullable="false" />
+    <Property Name="ReportedHours" Type="int" Nullable="false" />
+    <Property Name="TasksTaskId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="TasksWorks">
+    <End Role="Tasks" Type="CalendarModel.Store.Tasks" Multiplicity="1" />
+    <End Role="Works" Type="CalendarModel.Store.Works" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tasks">
+        <PropertyRef Name="TaskId" />
+      </Principal>
+      <Dependent Role="Works">
+        <PropertyRef Name="TasksTaskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
